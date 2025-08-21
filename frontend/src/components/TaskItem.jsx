@@ -7,18 +7,60 @@ export default function TaskItem({ task, onToggle, onEdit, onDelete }) {
 
   const created = task.createdAt ? new Date(task.createdAt).toLocaleString() : ''
 
-  return <div style={{ border: '1px solid #333', borderRadius: 8, padding: 12, background: '#1e1e1e' }}>
+  return <div style={{ 
+    border: '1px solid var(--border-color)', 
+    borderRadius: 8, 
+    padding: 12, 
+    background: 'var(--card-bg)',
+    transition: 'all 0.3s ease'
+  }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <h3 style={{ margin: 0 }}>{task.title}</h3>
-      <span style={{ background: priorityColor, color: '#111', borderRadius: 12, padding: '2px 8px', fontSize: 12, fontWeight: 700 }}>{task.priority}</span>
+      <h3 style={{ margin: 0, color: 'var(--text-color)' }}>{task.title}</h3>
+      <span style={{ 
+        background: priorityColor, 
+        color: '#111', 
+        borderRadius: 12, 
+        padding: '2px 8px', 
+        fontSize: 12, 
+        fontWeight: 700 
+      }}>{task.priority}</span>
     </div>
-    <p style={{ margin: '8px 0' }}>{task.description}</p>
-    <p style={{ margin: '8px 0', color: task.completed ? '#4caf50' : '#ccc' }}>{task.completed ? 'Completed' : 'Pending'}</p>
-    {created && <p style={{ margin: '8px 0', fontSize: 12, color: '#aaa' }}>{created}</p>}
+    <p style={{ margin: '8px 0', color: 'var(--text-color)' }}>{task.description}</p>
+    <p style={{ margin: '8px 0', color: task.completed ? '#4caf50' : 'var(--text-color)' }}>
+      {task.completed ? 'Completed' : 'Pending'}
+    </p>
+    {created && <p style={{ margin: '8px 0', fontSize: 12, color: 'var(--text-color)', opacity: 0.7 }}>{created}</p>}
     <div style={{ display: 'flex', gap: 8 }}>
-      <button onClick={onToggle}>{task.completed ? 'Mark Pending' : 'Mark Done'}</button>
-      <button onClick={onEdit}>Edit</button>
-      <button onClick={onDelete} style={{ color: '#f44336' }}>Delete</button>
+      <button onClick={onToggle} style={{ 
+        background: 'var(--bg-color)', 
+        color: 'var(--text-color)', 
+        border: '1px solid var(--border-color)',
+        borderRadius: 4,
+        padding: '4px 8px',
+        cursor: 'pointer'
+      }}>
+        {task.completed ? 'Mark Pending' : 'Mark Done'}
+      </button>
+      <button onClick={onEdit} style={{ 
+        background: 'var(--bg-color)', 
+        color: 'var(--text-color)', 
+        border: '1px solid var(--border-color)',
+        borderRadius: 4,
+        padding: '4px 8px',
+        cursor: 'pointer'
+      }}>
+        Edit
+      </button>
+      <button onClick={onDelete} style={{ 
+        color: '#f44336', 
+        background: 'var(--bg-color)', 
+        border: '1px solid var(--border-color)',
+        borderRadius: 4,
+        padding: '4px 8px',
+        cursor: 'pointer'
+      }}>
+        Delete
+      </button>
     </div>
   </div>
 }

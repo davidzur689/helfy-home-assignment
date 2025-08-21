@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import TaskList from './TaskList'
 import TaskForm from './TaskForm'
 import FilterBar from './FilterBar'
+import Modal from './Modal'
 import { useTaskFilter, useTasks } from '../hooks/useTasks'
 
 export default function TaskFilter() {
@@ -9,6 +10,22 @@ export default function TaskFilter() {
   const { filter, setFilter, apply } = useTaskFilter('all')
   const [showForm, setShowForm] = useState(false)
   const [editingTask, setEditingTask] = useState(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true)
+      document.documentElement.setAttribute('data-theme', 'dark')
+    }
+  }, [])
+
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode
+    setIsDarkMode(newTheme)
+    document.documentElement.setAttribute('data-theme', newTheme ? 'dark' : 'light')
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light')
+  }
 
   const filteredTasks = useMemo(() => apply(tasks), [apply, tasks])
 
@@ -33,9 +50,15 @@ export default function TaskFilter() {
   }
 
   return <div>
-    <FilterBar filter={filter} onChangeFilter={setFilter} onAdd={() => { setEditingTask(null); setShowForm(true) }} />
+    <FilterBar 
+      filter={filter} 
+      onChangeFilter={setFilter} 
+      onAdd={() => { setEditingTask(null); setShowForm(true) }}
+      isDarkMode={isDarkMode}
+      onToggleTheme={toggleTheme}
+    />
 
-    {showForm && (
+    <Modal isOpen={showForm} onClose={() => { setShowForm(false); setEditingTask(null) }}>
       <TaskForm
         initialTask={editingTask}
         onSubmit={(payload) => editingTask ? handleUpdate(editingTask.id, payload) : handleCreate(payload)}
@@ -43,7 +66,7 @@ export default function TaskFilter() {
         submitting={submitting}
         error={submitError}
       />
-    )}
+    </Modal>
 
     {loading && <p>Loading…</p>}
     {error && <p style={{ color: 'red' }}>{error}</p>}
