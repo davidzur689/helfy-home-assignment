@@ -47,21 +47,20 @@ function findTaskIndexById(id) {
 
 const app = express()
 
-// Middleware
+
 app.use(cors())
 app.use(express.json())
 
-// Health route
+
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' })
 })
 
-// GET /api/tasks - Get all tasks
+
 app.get('/api/tasks', (req, res) => {
   res.status(200).json(tasks)
 })
 
-// POST /api/tasks - Create a new task
 app.post('/api/tasks', (req, res) => {
   const body = req.body || {}
   const errors = validateCreatePayload(body)
@@ -82,7 +81,7 @@ app.post('/api/tasks', (req, res) => {
   res.status(201).json(task)
 })
 
-// PUT /api/tasks/:id - Update a task (full update)
+
 app.put('/api/tasks/:id', (req, res) => {
   const id = Number(req.params.id)
   if (!Number.isInteger(id) || id <= 0) {

@@ -40,3 +40,4 @@ cd frontend && npm install && npm run dev
 - Built as monorepo for simplicity
 
 Took about 2 hours for the front and 1.5 for backend and 0.5 hour for refactoring 4 hours in total to build this thing.
+
